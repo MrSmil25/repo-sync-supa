@@ -17,6 +17,7 @@ import {
   type ContentPlan,
   type ContentStatus,
 } from "@/lib/marketing";
+import { fetchActiveFramework, fetchActivePillars } from "@/lib/frameworks";
 import { formatDateID } from "@/lib/format";
 import {
   Dialog,
@@ -51,6 +52,14 @@ export function ContentDetailDialog({
   const { data: profile } = useMyProfile();
   const { data: profiles = [] } = useProfiles();
   const { data: pillars = [] } = useQuery({ queryKey: ["content-pillars"], queryFn: fetchPillars });
+  const { data: activeFramework } = useQuery({
+    queryKey: ["active-framework"],
+    queryFn: fetchActiveFramework,
+  });
+  const { data: fwPillars = [] } = useQuery({
+    queryKey: ["active-framework-pillars"],
+    queryFn: fetchActivePillars,
+  });
   const { data: plan } = useQuery({
     queryKey: ["content-plan", contentId],
     queryFn: () => fetchContentPlan(contentId!),
@@ -108,6 +117,18 @@ export function ContentDetailDialog({
           <DialogHeader>
             <DialogTitle className="flex flex-wrap items-center gap-2 pr-6">
               <PillarDot pillar={pillar} />
+              <span
+                className="inline-block size-2.5 shrink-0 rounded-full border border-border"
+                style={{
+                  backgroundColor:
+                    fwPillars.find((p) => p.id === plan?.framework_pillar_id)?.color_hex ??
+                    "transparent",
+                }}
+                title={
+                  fwPillars.find((p) => p.id === plan?.framework_pillar_id)?.name ??
+                  "Tanpa pilar strategis"
+                }
+              />
               <span className={plan?.is_archived ? "line-through opacity-60" : ""}>
                 {plan?.title ?? "Memuat…"}
               </span>
@@ -185,6 +206,38 @@ export function ContentDetailDialog({
                     className="mt-2 max-h-56 rounded-lg border object-contain"
                   />
                 )}
+              </div>
+
+              {/* Pilar strategis (kerangka aktif) */}
+              <div className="space-y-1.5">
+                <Label>Pilar Strategis</Label>
+                <Select
+                  value={plan.framework_pillar_id ?? "__none__"}
+                  onValueChange={(v) =>
+                    save.mutate({ framework_pillar_id: v === "__none__" ? null : v })
+                  }
+                  disabled={!canEdit}
+                >
+                  <SelectTrigger><SelectValue placeholder="Pilih pilar strategis" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">Belum ditentukan</SelectItem>
+                    {fwPillars.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        <span className="flex items-center gap-2">
+                          <span
+                            className="inline-block size-2.5 rounded-full border"
+                            style={{ backgroundColor: p.color_hex ?? "transparent" }}
+                          />
+                          {p.name} · {p.ideal_percentage ?? 0}%
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Pilar Konten = kategori tema. Pilar Strategis = posisi dalam kerangka
+                  {activeFramework?.name ? ` ${activeFramework.name}` : ""}.
+                </p>
               </div>
 
               {/* Permintaan desain terkait */}
