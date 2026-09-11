@@ -14,6 +14,7 @@ import {
   type ContentPlatform,
   type ContentStatus,
 } from "@/lib/marketing";
+import { fetchActiveFramework, fetchActivePillars } from "@/lib/frameworks";
 import {
   Dialog,
   DialogContent,
@@ -52,12 +53,21 @@ export function ContentFormDialog({
   const { data: divisions = [] } = useDivisions();
   const { data: pillars = [] } = useQuery({ queryKey: ["content-pillars"], queryFn: fetchPillars });
   const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: () => fetchEvents() });
+  const { data: activeFramework } = useQuery({
+    queryKey: ["active-framework"],
+    queryFn: fetchActiveFramework,
+  });
+  const { data: fwPillars = [] } = useQuery({
+    queryKey: ["active-framework-pillars"],
+    queryFn: fetchActivePillars,
+  });
 
   const [title, setTitle] = useState("");
   const [brief, setBrief] = useState("");
   const [platform, setPlatform] = useState<ContentPlatform>("Instagram");
   const [format, setFormat] = useState<ContentFormat>("Feed_Tunggal");
   const [pillarId, setPillarId] = useState(NONE);
+  const [frameworkPillarId, setFrameworkPillarId] = useState(NONE);
   const [division, setDivision] = useState(NONE);
   const [copywriter, setCopywriter] = useState(NONE);
   const [date, setDate] = useState("");
@@ -72,6 +82,7 @@ export function ContentFormDialog({
     setPlatform("Instagram");
     setFormat("Feed_Tunggal");
     setPillarId(NONE);
+    setFrameworkPillarId(NONE);
     setDivision(profile?.division ?? NONE);
     setCopywriter(profile?.id ?? NONE);
     setDate(defaultDate ?? "");
@@ -98,6 +109,7 @@ export function ContentFormDialog({
         platform,
         format,
         pillar_id: pillarId === NONE ? null : pillarId,
+        framework_pillar_id: frameworkPillarId === NONE ? null : frameworkPillarId,
         owner_division: division === NONE ? null : division,
         copywriter_id: copywriter === NONE ? null : copywriter,
         scheduled_date: date || null,
