@@ -14,6 +14,7 @@ import {
   type ContentPlatform,
   type ContentStatus,
 } from "@/lib/marketing";
+import { fetchActiveFramework, fetchActivePillars } from "@/lib/frameworks";
 import {
   Dialog,
   DialogContent,
@@ -52,12 +53,21 @@ export function ContentFormDialog({
   const { data: divisions = [] } = useDivisions();
   const { data: pillars = [] } = useQuery({ queryKey: ["content-pillars"], queryFn: fetchPillars });
   const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: () => fetchEvents() });
+  const { data: activeFramework } = useQuery({
+    queryKey: ["active-framework"],
+    queryFn: fetchActiveFramework,
+  });
+  const { data: fwPillars = [] } = useQuery({
+    queryKey: ["active-framework-pillars"],
+    queryFn: fetchActivePillars,
+  });
 
   const [title, setTitle] = useState("");
   const [brief, setBrief] = useState("");
   const [platform, setPlatform] = useState<ContentPlatform>("Instagram");
   const [format, setFormat] = useState<ContentFormat>("Feed_Tunggal");
   const [pillarId, setPillarId] = useState(NONE);
+  const [frameworkPillarId, setFrameworkPillarId] = useState(NONE);
   const [division, setDivision] = useState(NONE);
   const [copywriter, setCopywriter] = useState(NONE);
   const [date, setDate] = useState("");
@@ -72,6 +82,7 @@ export function ContentFormDialog({
     setPlatform("Instagram");
     setFormat("Feed_Tunggal");
     setPillarId(NONE);
+    setFrameworkPillarId(NONE);
     setDivision(profile?.division ?? NONE);
     setCopywriter(profile?.id ?? NONE);
     setDate(defaultDate ?? "");
@@ -98,6 +109,7 @@ export function ContentFormDialog({
         platform,
         format,
         pillar_id: pillarId === NONE ? null : pillarId,
+        framework_pillar_id: frameworkPillarId === NONE ? null : frameworkPillarId,
         owner_division: division === NONE ? null : division,
         copywriter_id: copywriter === NONE ? null : copywriter,
         scheduled_date: date || null,
@@ -108,6 +120,7 @@ export function ContentFormDialog({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["content-plans"] });
       queryClient.invalidateQueries({ queryKey: ["event-content-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["content-balance"] });
       toast.success("Rencana konten dibuat.");
       onOpenChange(false);
     },
@@ -179,6 +192,31 @@ export function ContentFormDialog({
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Pilar Strategis</Label>
+            <Select value={frameworkPillarId} onValueChange={setFrameworkPillarId}>
+              <SelectTrigger><SelectValue placeholder="Pilih pilar strategis" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value={NONE}>Belum ditentukan</SelectItem>
+                {fwPillars.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    <span className="flex items-center gap-2">
+                      <span
+                        className="inline-block size-2.5 rounded-full border"
+                        style={{ backgroundColor: p.color_hex ?? "transparent" }}
+                      />
+                      {p.name} · {p.ideal_percentage ?? 0}%
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Pilar Konten = kategori tema. Pilar Strategis = posisi dalam kerangka
+              {activeFramework?.name ? ` ${activeFramework.name}` : ""}.
+            </p>
           </div>
 
           <div className="space-y-1.5">

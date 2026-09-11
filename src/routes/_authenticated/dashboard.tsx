@@ -12,6 +12,7 @@ import { UrgentBanners } from "@/components/announcements/UrgentBanners";
 import { WelcomeGuideCard } from "@/components/WelcomeGuideCard";
 import { MarketingDashboardCards } from "@/components/marketing/MarketingDashboardCards";
 import { QuickShortcuts } from "@/components/resources/QuickShortcuts";
+import { ContentBalanceMiniCard } from "@/components/marketing/ContentBalanceMiniCard";
 import { countContributionsThisWeek, countUnacknowledgedCoaching, isKadiv } from "@/lib/hr";
 import { countUnacknowledgedWarnings, fetchWarnings } from "@/lib/warnings";
 import { fetchProposals, isEligibleVoter } from "@/lib/proposals";
@@ -240,6 +241,11 @@ function DashboardPage() {
       <MarketingDashboardCards />
       <WelcomeGuideCard />
       <QuickShortcuts />
+      {(isBPH(profile?.role) || (profile?.role === "Kadiv" && profile?.division === "KRD")) && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ContentBalanceMiniCard />
+        </div>
+      )}
 
       {myVoteProposals.length > 0 && (
         <Link

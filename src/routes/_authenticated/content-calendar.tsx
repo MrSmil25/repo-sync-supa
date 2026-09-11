@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useDivisions, useMyProfile, useProfiles } from "@/hooks/useProfile";
 import { fetchEvents } from "@/lib/events";
 import { formatDateID } from "@/lib/format";
+import { fetchActivePillars } from "@/lib/frameworks";
 import {
   CONTENT_BOARD_STATUSES,
   CONTENT_PLATFORMS,
@@ -76,7 +77,7 @@ const MONTHS = [
 ];
 const DAY_LABELS = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
 
-function CardChip({ plan, pillarColor, onOpen }: { plan: ContentPlan; pillarColor?: string | null; onOpen: () => void }) {
+function CardChip({ plan, pillarColor, frameworkColor, onOpen }: { plan: ContentPlan; pillarColor?: string | null; frameworkColor?: string | null; onOpen: () => void }) {
   return (
     <button
       type="button"
@@ -87,6 +88,13 @@ function CardChip({ plan, pillarColor, onOpen }: { plan: ContentPlan; pillarColo
       style={{ borderLeft: `3px solid ${pillarColor ?? "hsl(var(--border))"}` }}
     >
       <PlatformChip platform={plan.platform} />
+      {frameworkColor && (
+        <span
+          className="inline-block size-1.5 shrink-0 rounded-full"
+          style={{ backgroundColor: frameworkColor }}
+          title="Pilar strategis"
+        />
+      )}
       <span className={`min-w-0 flex-1 truncate ${plan.is_archived ? "line-through" : ""}`}>
         {plan.title}
       </span>
@@ -180,6 +188,10 @@ function ContentCalendarPage() {
   const { data: profiles = [] } = useProfiles();
   const { data: divisions = [] } = useDivisions();
   const { data: pillars = [] } = useQuery({ queryKey: ["content-pillars"], queryFn: fetchPillars });
+  const { data: fwPillars = [] } = useQuery({
+    queryKey: ["active-framework-pillars"],
+    queryFn: fetchActivePillars,
+  });
   const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: () => fetchEvents() });
 
   const [includeArchived, setIncludeArchived] = useState(false);
@@ -205,6 +217,11 @@ function ContentCalendarPage() {
     const map = new Map(pillars.map((p) => [p.id, p.color_hex]));
     return (id: string | null) => (id ? (map.get(id) ?? null) : null);
   }, [pillars]);
+
+  const fwColorOf = useMemo(() => {
+    const map = new Map(fwPillars.map((p) => [p.id, p.color_hex]));
+    return (id?: string | null) => (id ? (map.get(id) ?? null) : null);
+  }, [fwPillars]);
 
   const nameOf = useMemo(() => {
     const map = new Map(profiles.map((p) => [p.id, p.full_name as string]));
@@ -429,6 +446,7 @@ function ContentCalendarPage() {
                         key={p.id}
                         plan={p}
                         pillarColor={colorOf(p.pillar_id)}
+                        frameworkColor={fwColorOf(p.framework_pillar_id)}
                         onOpen={() => setDetailId(p.id)}
                       />
                     ))}
@@ -494,6 +512,13 @@ function ContentCalendarPage() {
                       }`}
                     >
                       <PillarDot pillar={pillars.find((x) => x.id === p.pillar_id) ?? null} />
+                      {fwColorOf(p.framework_pillar_id) && (
+                        <span
+                          className="inline-block size-2 shrink-0 rounded-full border border-border"
+                          style={{ backgroundColor: fwColorOf(p.framework_pillar_id) ?? undefined }}
+                          title="Pilar strategis"
+                        />
+                      )}
                       {p.title}
                     </button>
                     {p.is_archived && <ArchivedBadge className="mt-1" />}

@@ -1405,6 +1405,42 @@ export type Database = {
           },
         ]
       }
+      content_frameworks: {
+        Row: {
+          code: string
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_builtin: boolean | null
+          name: string
+          origin: string | null
+          sort_order: number | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_builtin?: boolean | null
+          name: string
+          origin?: string | null
+          sort_order?: number | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_builtin?: boolean | null
+          name?: string
+          origin?: string | null
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
       content_pillars: {
         Row: {
           color_hex: string | null
@@ -1447,6 +1483,7 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           format: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id: string | null
           hashtags: string | null
           id: string
           is_archived: boolean
@@ -1476,6 +1513,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           format?: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id?: string | null
           hashtags?: string | null
           id?: string
           is_archived?: boolean
@@ -1505,6 +1543,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           format?: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id?: string | null
           hashtags?: string | null
           id?: string
           is_archived?: boolean
@@ -1628,6 +1667,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "workload_distribution"
             referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "content_plans_framework_pillar_id_fkey"
+            columns: ["framework_pillar_id"]
+            isOneToOne: false
+            referencedRelation: "content_balance"
+            referencedColumns: ["pillar_id"]
+          },
+          {
+            foreignKeyName: "content_plans_framework_pillar_id_fkey"
+            columns: ["framework_pillar_id"]
+            isOneToOne: false
+            referencedRelation: "framework_pillars"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "content_plans_owner_division_fkey"
@@ -2576,6 +2629,47 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "workload_distribution"
             referencedColumns: ["member_id"]
+          },
+        ]
+      }
+      framework_pillars: {
+        Row: {
+          color_hex: string | null
+          description: string | null
+          examples: string | null
+          framework_id: string | null
+          id: string
+          ideal_percentage: number | null
+          name: string
+          sort_order: number | null
+        }
+        Insert: {
+          color_hex?: string | null
+          description?: string | null
+          examples?: string | null
+          framework_id?: string | null
+          id?: string
+          ideal_percentage?: number | null
+          name: string
+          sort_order?: number | null
+        }
+        Update: {
+          color_hex?: string | null
+          description?: string | null
+          examples?: string | null
+          framework_id?: string | null
+          id?: string
+          ideal_percentage?: number | null
+          name?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "framework_pillars_framework_id_fkey"
+            columns: ["framework_id"]
+            isOneToOne: false
+            referencedRelation: "content_frameworks"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -5647,6 +5741,18 @@ export type Database = {
             referencedColumns: ["code"]
           },
         ]
+      }
+      content_balance: {
+        Row: {
+          aktual_persen: number | null
+          color_hex: string | null
+          jumlah_aktual: number | null
+          pilar: string | null
+          pillar_id: string | null
+          sort_order: number | null
+          target_persen: number | null
+        }
+        Relationships: []
       }
       content_calendar_summary: {
         Row: {
