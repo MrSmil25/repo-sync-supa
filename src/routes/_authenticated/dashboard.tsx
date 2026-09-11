@@ -239,6 +239,7 @@ function DashboardPage() {
       <UrgentBanners />
       <MarketingDashboardCards />
       <WelcomeGuideCard />
+      <QuickShortcuts />
 
       {myVoteProposals.length > 0 && (
         <Link
