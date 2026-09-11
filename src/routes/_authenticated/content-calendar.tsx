@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useDivisions, useMyProfile, useProfiles } from "@/hooks/useProfile";
 import { fetchEvents } from "@/lib/events";
 import { formatDateID } from "@/lib/format";
+import { fetchActivePillars } from "@/lib/frameworks";
 import {
   CONTENT_BOARD_STATUSES,
   CONTENT_PLATFORMS,
@@ -216,6 +217,11 @@ function ContentCalendarPage() {
     const map = new Map(pillars.map((p) => [p.id, p.color_hex]));
     return (id: string | null) => (id ? (map.get(id) ?? null) : null);
   }, [pillars]);
+
+  const fwColorOf = useMemo(() => {
+    const map = new Map(fwPillars.map((p) => [p.id, p.color_hex]));
+    return (id?: string | null) => (id ? (map.get(id) ?? null) : null);
+  }, [fwPillars]);
 
   const nameOf = useMemo(() => {
     const map = new Map(profiles.map((p) => [p.id, p.full_name as string]));
