@@ -103,6 +103,7 @@ export function ContentDetailDialog({
       queryClient.invalidateQueries({ queryKey: ["content-plan", contentId] });
       queryClient.invalidateQueries({ queryKey: ["content-plans"] });
       queryClient.invalidateQueries({ queryKey: ["event-content-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["content-balance"] });
       toast.success("Perubahan disimpan.");
     },
     onError: (e: Error) => toast.error("Gagal: " + e.message),

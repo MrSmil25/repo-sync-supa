@@ -120,6 +120,7 @@ export function ContentFormDialog({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["content-plans"] });
       queryClient.invalidateQueries({ queryKey: ["event-content-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["content-balance"] });
       toast.success("Rencana konten dibuat.");
       onOpenChange(false);
     },
