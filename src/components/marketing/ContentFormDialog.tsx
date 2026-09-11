@@ -182,6 +182,31 @@ export function ContentFormDialog({
           </div>
 
           <div className="space-y-1.5">
+            <Label>Pilar Strategis</Label>
+            <Select value={frameworkPillarId} onValueChange={setFrameworkPillarId}>
+              <SelectTrigger><SelectValue placeholder="Pilih pilar strategis" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value={NONE}>Belum ditentukan</SelectItem>
+                {fwPillars.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    <span className="flex items-center gap-2">
+                      <span
+                        className="inline-block size-2.5 rounded-full border"
+                        style={{ backgroundColor: p.color_hex ?? "transparent" }}
+                      />
+                      {p.name} · {p.ideal_percentage ?? 0}%
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Pilar Konten = kategori tema. Pilar Strategis = posisi dalam kerangka
+              {activeFramework?.name ? ` ${activeFramework.name}` : ""}.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
             <Label>Divisi Pemilik</Label>
             <Select value={division} onValueChange={setDivision}>
               <SelectTrigger><SelectValue placeholder="Pilih divisi" /></SelectTrigger>

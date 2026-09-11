@@ -170,6 +170,7 @@ export type ContentPlan = {
   platform: ContentPlatform;
   format: ContentFormat;
   pillar_id: string | null;
+  framework_pillar_id?: string | null;
   scheduled_date: string | null;
   scheduled_time: string | null;
   status: ContentStatus;
