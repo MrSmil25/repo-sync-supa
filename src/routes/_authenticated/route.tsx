@@ -42,6 +42,7 @@ import {
   SlidersHorizontal,
   Palette,
   Wrench,
+  Compass,
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
