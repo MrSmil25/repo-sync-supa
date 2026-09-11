@@ -11,6 +11,7 @@ import { SupervisorOverview } from "@/components/assignments/SupervisorOverview"
 import { UrgentBanners } from "@/components/announcements/UrgentBanners";
 import { WelcomeGuideCard } from "@/components/WelcomeGuideCard";
 import { MarketingDashboardCards } from "@/components/marketing/MarketingDashboardCards";
+import { QuickShortcuts } from "@/components/resources/QuickShortcuts";
 import { countContributionsThisWeek, countUnacknowledgedCoaching, isKadiv } from "@/lib/hr";
 import { countUnacknowledgedWarnings, fetchWarnings } from "@/lib/warnings";
 import { fetchProposals, isEligibleVoter } from "@/lib/proposals";
