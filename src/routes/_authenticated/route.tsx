@@ -41,6 +41,7 @@ import {
   LifeBuoy,
   SlidersHorizontal,
   Palette,
+  Wrench,
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
@@ -140,6 +141,7 @@ const navSections: NavSection[] = [
     items: [
       { to: "/content-calendar", label: "Kalender Konten", icon: CalendarDays },
       { to: "/design-queue", label: "Antrean Desain", icon: Palette },
+      { to: "/resources", label: "Alat & Aset", icon: Wrench },
     ],
   },
   {
