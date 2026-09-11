@@ -13,6 +13,7 @@ import { WelcomeGuideCard } from "@/components/WelcomeGuideCard";
 import { MarketingDashboardCards } from "@/components/marketing/MarketingDashboardCards";
 import { QuickShortcuts } from "@/components/resources/QuickShortcuts";
 import { ContentBalanceMiniCard } from "@/components/marketing/ContentBalanceMiniCard";
+import { PerformanceReminderCard } from "@/components/marketing/PerformanceReminderCard";
 import { countContributionsThisWeek, countUnacknowledgedCoaching, isKadiv } from "@/lib/hr";
 import { countUnacknowledgedWarnings, fetchWarnings } from "@/lib/warnings";
 import { fetchProposals, isEligibleVoter } from "@/lib/proposals";
@@ -239,6 +240,7 @@ function DashboardPage() {
 
       <UrgentBanners />
       <MarketingDashboardCards />
+      <PerformanceReminderCard />
       <WelcomeGuideCard />
       <QuickShortcuts />
       {(isBPH(profile?.role) || (profile?.role === "Kadiv" && profile?.division === "KRD")) && (

@@ -43,6 +43,7 @@ import {
   Palette,
   Wrench,
   Compass,
+  ChartNoAxesCombined,
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
@@ -144,6 +145,7 @@ const navSections: NavSection[] = [
       { to: "/design-queue", label: "Antrean Desain", icon: Palette },
       { to: "/resources", label: "Alat & Aset", icon: Wrench },
       { to: "/content-planner", label: "Content Planner", icon: Compass },
+      { to: "/content-performance", label: "Performa Konten", icon: ChartNoAxesCombined },
     ],
   },
   {
