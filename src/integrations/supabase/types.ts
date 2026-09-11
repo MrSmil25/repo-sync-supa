@@ -1441,6 +1441,148 @@ export type Database = {
         }
         Relationships: []
       }
+      content_performance: {
+        Row: {
+          comments: number | null
+          content_plan_id: string | null
+          created_at: string | null
+          engagement_total: number | null
+          format: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id: string | null
+          id: string
+          impressions: number | null
+          is_archived: boolean
+          likes: number | null
+          link_clicks: number | null
+          new_followers: number | null
+          notes: string | null
+          platform: Database["public"]["Enums"]["content_platform"]
+          post_url: string | null
+          posted_date: string
+          profile_visits: number | null
+          reach: number | null
+          recorded_by: string | null
+          saves: number | null
+          shares: number | null
+          standalone_title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          comments?: number | null
+          content_plan_id?: string | null
+          created_at?: string | null
+          engagement_total?: number | null
+          format?: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id?: string | null
+          id?: string
+          impressions?: number | null
+          is_archived?: boolean
+          likes?: number | null
+          link_clicks?: number | null
+          new_followers?: number | null
+          notes?: string | null
+          platform?: Database["public"]["Enums"]["content_platform"]
+          post_url?: string | null
+          posted_date: string
+          profile_visits?: number | null
+          reach?: number | null
+          recorded_by?: string | null
+          saves?: number | null
+          shares?: number | null
+          standalone_title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          comments?: number | null
+          content_plan_id?: string | null
+          created_at?: string | null
+          engagement_total?: number | null
+          format?: Database["public"]["Enums"]["content_format"]
+          framework_pillar_id?: string | null
+          id?: string
+          impressions?: number | null
+          is_archived?: boolean
+          likes?: number | null
+          link_clicks?: number | null
+          new_followers?: number | null
+          notes?: string | null
+          platform?: Database["public"]["Enums"]["content_platform"]
+          post_url?: string | null
+          posted_date?: string
+          profile_visits?: number | null
+          reach?: number | null
+          recorded_by?: string | null
+          saves?: number | null
+          shares?: number | null
+          standalone_title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_performance_content_plan_id_fkey"
+            columns: ["content_plan_id"]
+            isOneToOne: false
+            referencedRelation: "content_needs_performance"
+            referencedColumns: ["content_plan_id"]
+          },
+          {
+            foreignKeyName: "content_performance_content_plan_id_fkey"
+            columns: ["content_plan_id"]
+            isOneToOne: false
+            referencedRelation: "content_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_performance_framework_pillar_id_fkey"
+            columns: ["framework_pillar_id"]
+            isOneToOne: false
+            referencedRelation: "content_balance"
+            referencedColumns: ["pillar_id"]
+          },
+          {
+            foreignKeyName: "content_performance_framework_pillar_id_fkey"
+            columns: ["framework_pillar_id"]
+            isOneToOne: false
+            referencedRelation: "framework_pillars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_performance_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "design_workload"
+            referencedColumns: ["designer_id"]
+          },
+          {
+            foreignKeyName: "content_performance_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "member_holdings"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "content_performance_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "member_progress"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "content_performance_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_performance_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "workload_distribution"
+            referencedColumns: ["member_id"]
+          },
+        ]
+      }
       content_pillars: {
         Row: {
           color_hex: string | null
@@ -2146,6 +2288,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "workload_distribution"
             referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "design_requests_content_plan_id_fkey"
+            columns: ["content_plan_id"]
+            isOneToOne: false
+            referencedRelation: "content_needs_performance"
+            referencedColumns: ["content_plan_id"]
           },
           {
             foreignKeyName: "design_requests_content_plan_id_fkey"
@@ -5764,6 +5913,38 @@ export type Database = {
         }
         Relationships: []
       }
+      content_needs_performance: {
+        Row: {
+          content_plan_id: string | null
+          owner_division: string | null
+          platform: Database["public"]["Enums"]["content_platform"] | null
+          published_at: string | null
+          title: string | null
+        }
+        Insert: {
+          content_plan_id?: string | null
+          owner_division?: string | null
+          platform?: Database["public"]["Enums"]["content_platform"] | null
+          published_at?: string | null
+          title?: string | null
+        }
+        Update: {
+          content_plan_id?: string | null
+          owner_division?: string | null
+          platform?: Database["public"]["Enums"]["content_platform"] | null
+          published_at?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_plans_owner_division_fkey"
+            columns: ["owner_division"]
+            isOneToOne: false
+            referencedRelation: "divisions"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       design_workload: {
         Row: {
           designer_id: string | null
@@ -5864,6 +6045,67 @@ export type Database = {
           category: string | null
           dompet: string | null
           total: number | null
+        }
+        Relationships: []
+      }
+      performance_by_dow: {
+        Row: {
+          hari_angka: number | null
+          hari_nama: string | null
+          jumlah_konten: number | null
+          rata_interaksi: number | null
+          rata_jangkauan: number | null
+        }
+        Relationships: []
+      }
+      performance_by_format: {
+        Row: {
+          engagement_rate_persen: number | null
+          format: Database["public"]["Enums"]["content_format"] | null
+          jumlah_konten: number | null
+          rata_bagikan: number | null
+          rata_interaksi: number | null
+          rata_jangkauan: number | null
+          rata_simpanan: number | null
+        }
+        Relationships: []
+      }
+      performance_by_pillar: {
+        Row: {
+          color_hex: string | null
+          engagement_rate_persen: number | null
+          jumlah_konten: number | null
+          pilar: string | null
+          rata_interaksi: number | null
+          rata_jangkauan: number | null
+          rata_simpanan: number | null
+        }
+        Relationships: []
+      }
+      performance_monthly: {
+        Row: {
+          bulan: string | null
+          jumlah_konten: number | null
+          rata_interaksi: number | null
+          rata_jangkauan: number | null
+          total_follower_baru: number | null
+        }
+        Relationships: []
+      }
+      performance_top: {
+        Row: {
+          engagement_rate: number | null
+          engagement_total: number | null
+          format: Database["public"]["Enums"]["content_format"] | null
+          id: string | null
+          judul: string | null
+          new_followers: number | null
+          pilar: string | null
+          platform: Database["public"]["Enums"]["content_platform"] | null
+          post_url: string | null
+          posted_date: string | null
+          reach: number | null
+          saves: number | null
         }
         Relationships: []
       }
